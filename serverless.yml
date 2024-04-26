@@ -1,0 +1,23 @@
+service: kolektu-wallet-api
+
+provider:
+  name: aws
+  runtime: nodejs18.x
+  region: us-west-2
+  apiGateway:
+    restApiId: 4picqtq5yi
+    restApiRootResourceId: 1s0r5h
+
+plugins:
+  - serverless-offline
+
+functions:
+  walletFunction:
+    handler: wallet.main
+    events:
+      - http:
+          path: /wallet
+          method: get
+          authorizer:
+            type: TOKEN
+            authorizerId: pcggc7
