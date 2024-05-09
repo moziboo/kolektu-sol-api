@@ -4,6 +4,8 @@ exports.main = async function (event) {
   return {
     statusCode: 200,
     headers: corsHandler(event.headers.origin),
-    body: JSON.stringify({ message: "We going to put wallet things here probably" }),
+    body: JSON.stringify({
+      message: "What would you like to know about the poorchain?",
+    }),
   };
 };

@@ -1,23 +1,50 @@
-service: kolektu-wallet-api
+service: kolektu-sol-api
 
 provider:
   name: aws
   runtime: nodejs18.x
   region: us-west-2
   apiGateway:
-    restApiId: 4picqtq5yi
-    restApiRootResourceId: 1s0r5h
+    restApiId: xvum9aicgd
+    restApiRootResourceId: eno78hxmc3
 
 plugins:
   - serverless-offline
 
+custom:
+  corsDefault:
+    origins:
+      - "http://localhost:3000"
+      - "http://localhost:3001"
+      - "https://mmmelton.com"
+    headers:
+      - Api-Key
+      - Content-Type
+      - X-Amz-Date
+      - Authorization
+      - X-Api-Key
+      - X-Amz-Security-Token
+      - X-Amz-User-Agent
+
+  authorizerDefault:
+    type: TOKEN
+    authorizerId: 165bqs
+
 functions:
+  solFunction:
+    handler: sol.main
+    events:
+      - http:
+          path: /sol
+          method: get
+          authorizer: ${self:custom.authorizerDefault}
+          cors: ${self:custom.corsDefault}
+
   walletFunction:
     handler: wallet.main
     events:
       - http:
-          path: /wallet
+          path: /sol/wallet
           method: get
-          authorizer:
-            type: TOKEN
-            authorizerId: pcggc7
+          authorizer: ${self:custom.authorizerDefault}
+          cors: ${self:custom.corsDefault}
